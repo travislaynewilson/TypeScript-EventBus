@@ -52,7 +52,7 @@ export type EventBusConfig = {
    * @param eventKey - The key of the event that was emitted.
    * @param payload - The payload passed to the event handlers.
    */
-  onEmit?: (eventKey: EventKey, payload?: unknown) => void
+  onEmit?: (eventKey: EventKey, handler: Callable, payload?: unknown) => void
 
   /**
    * Callback function invoked when an error occurs within an event handler.
@@ -196,14 +196,13 @@ export function createEventBus<E extends { [K in keyof E]: Callable }>(
   const emit: EventBus<E>['emit'] = (key, ...args) => {
     const handlers = bus.get(key)
     if (handlers) {
-      config?.onEmit?.(key, args[0])
-
       handlers.forEach((fn) => {
         try {
           fn(...args)
+          config?.onEmit?.(key, fn, ...args)
         } catch (e) {
           // Invoke the onError callback if provided.
-          config?.onError?.(e, key, args[0])
+          config?.onError?.(e, key, ...args)
         }
       })
     }
