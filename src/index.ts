@@ -50,6 +50,7 @@ export type EventBusConfig = {
    * Callback function invoked when an event is emitted.
    *
    * @param eventKey - The key of the event that was emitted.
+   * @param handler - The handler function that was invoked for the event.
    * @param payload - The payload passed to the event handlers.
    */
   onEmit?: (eventKey: EventKey, handler: Callable, payload?: unknown) => void
