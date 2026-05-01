@@ -37,11 +37,11 @@ export const eventBus = createEventBusChannel<MyEvents>({
   onUnsubscribe: (eventKey, handler) => {
     console.debug(`Unsubscribed from event "${String(eventKey)}":`, handler);
   },
-  onEmit: (eventKey, handler, ...payload) => {
-    console.debug(`Successfully emitted event "${String(eventKey)}":`, handler, ...payload);
+  onEmit: (eventKey, handler, payload) => {
+    console.debug(`Successfully emitted event "${String(eventKey)}":`, handler, payload);
   },
-  onError: (error, eventKey, ...payload) => {
-    console.error(`Error in event "${String(eventKey)}":`, error, ...payload);
+  onError: (error, eventKey, payload) => {
+    console.error(`Error in event "${String(eventKey)}":`, error, payload);
   },
 });
 ```
