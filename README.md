@@ -2,20 +2,6 @@
 
 Typed Event Bus is a lightweight and fully type-safe event management library for TypeScript applications. It provides a simple and intuitive API to subscribe, unsubscribe, and emit events, ensuring strong type guarantees and enhancing code reliability. Perfect for building scalable and maintainable event-driven architectures in modern web and server-side projects.
 
-## Installation
-
-Install the package via npm:
-
-```
-npm install typed-event-bus
-```
-
-Or using Yarn:
-
-```
-yarn add typed-event-bus
-```
-
 ## Usage
 
 ### Defining Events
@@ -45,8 +31,17 @@ import { createEventBusChannel } from 'typed-event-bus';
 import { MyEvents } from './events';
 
 export const eventBus = createEventBusChannel<MyEvents>({
-  onError: (error, eventKey, payload) => {
-    console.error(`Error in event "${String(eventKey)}":`, error, payload);
+  onSubscribe: (eventKey, handler) => {
+    console.debug(`Subscribed to event "${String(eventKey)}":`, handler);
+  },
+  onUnsubscribe: (eventKey, handler) => {
+    console.debug(`Unsubscribed from event "${String(eventKey)}":`, handler);
+  },
+  onEmit: (eventKey, handler, ...payload) => {
+    console.debug(`Successfully emitted event "${String(eventKey)}":`, handler, ...payload);
+  },
+  onError: (error, eventKey, ...payload) => {
+    console.error(`Error in event "${String(eventKey)}":`, error, ...payload);
   },
 });
 ```
